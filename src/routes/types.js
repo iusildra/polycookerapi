@@ -4,7 +4,7 @@ const pool = require("../db");
 
 router.route("/").all((req, res, next) => {
     pool.query(`SELECT * FROM types ORDER BY type_name ASC`, (err, results) => {
-        if (err) res.status(500).send({ msg: "DB Error, please try again" });
+        if (err) res.status(500).send(err);
         else res.status(200).json(results.rows);
     });
 });
@@ -17,8 +17,7 @@ router
             req.params["id"]
         );
         pool.query(sql, (err, results) => {
-            if (err)
-                res.status(500).send({ msg: "DB Error, please try again" });
+            if (err) res.status(500).send(err);
             else res.status(200).json(results.rows);
         });
     })

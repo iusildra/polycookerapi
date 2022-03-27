@@ -13,9 +13,6 @@ SET email=%L,username=%L
 
 router
     .route("/")
-    .all((req, res, next) => {
-        next();
-    })
     .get((req, res) => {
         let limit = isNaN(req.query["limit"])
             ? defaultLimit
@@ -139,6 +136,7 @@ router
                     });
             });
         });
-    }).post((req, res) => res.status(405));
+    })
+    .post((req, res) => res.status(405));
 
 module.exports = router;

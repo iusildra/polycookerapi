@@ -27,7 +27,6 @@ router
         }
 
         bcryptjs.hash(req.body.passwd, 10, (err_hash, hash) => {
-            console.log("admin :", admin);
             if (err_hash) return res.status(500).send({ msg: err_hash });
             else {
                 const sql = format(

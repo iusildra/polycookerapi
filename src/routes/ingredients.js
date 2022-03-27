@@ -5,9 +5,6 @@ const pool = require("../db");
 
 router
     .route("/")
-    .all((req, res, next) => {
-        next();
-    })
     .get((req, res) => {
         pool.query(
             `SELECT *
@@ -54,9 +51,6 @@ router
 
 router
     .route("/name/:name")
-    .all((req, res, next) => {
-        next();
-    })
     .get((req, res) => {
         const sql = format(
             `SELECT *

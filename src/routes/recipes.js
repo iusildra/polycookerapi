@@ -203,9 +203,6 @@ router.route("/ingredients/").get((req, res) => {
 
 router
     .route("/id/:id")
-    .all((req, res, next) => {
-        next();
-    })
     .get((req, res) => {
         let get_recipe = format(getRecipeById, req.params["id"]);
         pool.query(get_recipe, (err, results) => {

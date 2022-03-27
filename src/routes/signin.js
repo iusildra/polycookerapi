@@ -16,21 +16,17 @@ router
             req.body.emailusername
         );
         pool.query(sql, (err, results) => {
-            if (err)
-                return res
-                    .status(500)
-                    .send({ msg: "DB Error, please try again" });
+            if (err) return res.status(500).send(err);
             if (results.rows.length != 1) {
-                return res.status(418).send({ msg: "Username or password is incorrect !" });
+                return res
+                    .status(418)
+                    .send({ msg: "Username or password is incorrect !" });
             }
             bcryptjs.compare(
                 req.body.passwd,
                 results.rows[0]["passwd"],
                 (bErr, bRes) => {
-                    if (bErr)
-                        return res
-                            .status(500)
-                            .send({ msg: "DB Error, please try again" });
+                    if (bErr) return res.status(500).send(bErr);
                     if (bRes) {
                         const token = jwt.sign(
                             {
