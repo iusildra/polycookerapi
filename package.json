@@ -3,8 +3,8 @@
     "private": true,
     "version": "0.0.0",
     "scripts": {
-        "start": "node ./src/index.js",
-        "dev": "nodemon ./src/index.js localhost 3080"
+        "start": "node ./index.js",
+        "dev": "nodemon ./index.js localhost 3080"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
