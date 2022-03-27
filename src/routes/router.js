@@ -12,6 +12,7 @@ const units = require("./units");
 const users = require("./users");
 const signin = require("./signin");
 
+router.get("/", (req, res) => res.status(200).send("Cooking time !"))
 router.use("/ingredients", ingredients);
 router.use("/recipes", recipes);
 router.use("/seasons", seasons);

@@ -22,8 +22,17 @@ router
             else res.status(200).json(results.rows);
         });
     })
-    .post((req, res) => {})
-    .patch((req, res) => {})
-    .delete((req, res) => {});
+    .post((req, res) => {
+        return res.status(405);
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .delete((req, res) => {
+        return res.status(405);
+    });
 
 module.exports = router;

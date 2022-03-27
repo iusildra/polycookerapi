@@ -132,7 +132,10 @@ router
         validate.validateToken(
             req.headers.authorization.split(" ")[1],
             (err, data) => {
-                if (err) return res.status(401).send({msg: "You are not logged in !"});
+                if (err)
+                    return res
+                        .status(401)
+                        .send({ msg: "You are not logged in !" });
                 let recipe_uuid = uuid.v4();
                 let post_recipe = format(
                     insertRecipe,
@@ -176,6 +179,15 @@ router
                 });
             }
         );
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .delete((req, res) => {
+        return res.status(405);
     });
 
 router.route("/ingredients/").get((req, res) => {
@@ -213,16 +225,20 @@ router
     .delete((req, res) => {
         const token = req.headers.authorization.split(" ")[1];
         validate.validateToken(token, (err, data) => {
-            if (err) return res.status(401).send({msg: "You're not loggin in !"});
+            if (err)
+                return res.status(401).send({ msg: "You're not loggin in !" });
             const sql = format(
                 `SELECT recipe_author FROM recipes WHERE recipe_id=%L`,
                 req.params.id
             );
             pool.query(sql, (err0, results) => {
                 if (err0) return res.status(500).send(err0);
-                if (results.rowCount == 0) return res.status(404).send({msg: "Unknown recipe"});
+                if (results.rowCount == 0)
+                    return res.status(404).send({ msg: "Unknown recipe" });
                 if (results.rows[0]["recipe_author"] != data.userid)
-                    return res.status(403).send({msg: "You're not authorized !"});
+                    return res
+                        .status(403)
+                        .send({ msg: "You're not authorized !" });
 
                 const sql_delete = format(
                     `DELETE FROM recipes
@@ -240,6 +256,15 @@ router
         });
 
         res.status(200);
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .post((req, res) => {
+        return res.status(405);
     });
 
 module.exports = router;

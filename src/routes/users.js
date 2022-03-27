@@ -29,18 +29,25 @@ router
             limit
         );
         pool.query(sql, (err, results) => {
-            if (err)
-                res.status(500).send({ msg: err });
+            if (err) res.status(500).send({ msg: err });
             else res.status(200).json(results.rows);
         });
     })
-    .patch((req, res) => {});
+    .post((req, res) => {
+        return res.status(405);
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .delete((req, res) => {
+        return res.status(405);
+    });
 
 router
     .route("/id/:id")
-    .all((req, res, next) => {
-        next();
-    })
     .get((req, res) => {
         let limit = isNaN(req.query["limit"])
             ? defaultLimit
@@ -64,8 +71,7 @@ router
             limit
         );
         pool.query(sql, (err, results) => {
-            if (err)
-                res.status(500).send({ msg: err });
+            if (err) res.status(500).send({ msg: err });
             else res.status(200).json(results.rows);
         });
     })
@@ -80,7 +86,8 @@ router
                     });
             });
         validateToken(req.headers.authorization.split(" ")[1], (err, data) => {
-            if (err) return res.status(401).send({msg: "You are not logged in !"});
+            if (err)
+                return res.status(401).send({ msg: "You are not logged in !" });
             if (req.body.passwd) {
                 bcryptjs.hash(req.body.passwd, 10, (err_hash, hash) => {
                     if (err_hash) return res.status(500).send(err_hash);
@@ -132,6 +139,6 @@ router
                     });
             });
         });
-    });
+    }).post((req, res) => res.status(405));
 
 module.exports = router;

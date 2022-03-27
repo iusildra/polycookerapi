@@ -14,26 +14,42 @@ router
 		FROM ingredients
 		ORDER BY ingredient_name ASC`,
             (err, results) => {
-                if (err)
-                    res.status(500).send({ msg: err });
+                if (err) res.status(500).send({ msg: err });
                 else res.status(200).json(results.rows);
             }
         );
     })
     .post((req, res) => {
-        valide.validateToken(req.headers.authorization.split(" ")[1], (err, data) => {
-            if (err) return res.status(401).send({msg: "You are not logged in !"})
-            const sql = format(
-                `INSERT INTO ingredients VALUES(%L, %L, %L)`,
-                req.body.ingredient_name,
-                req.body.is_allergen,
-                req.body.ingredient_season
-            );
-            pool.query(sql, (err, results) => {
-                if (err) return res.status(500).send({ msg: err });
-                res.status(200).send({msg: "Ingredient successfully added !"})
-            });
-        })
+        valide.validateToken(
+            req.headers.authorization.split(" ")[1],
+            (err, data) => {
+                if (err)
+                    return res
+                        .status(401)
+                        .send({ msg: "You are not logged in !" });
+                const sql = format(
+                    `INSERT INTO ingredients VALUES(%L, %L, %L)`,
+                    req.body.ingredient_name,
+                    req.body.is_allergen,
+                    req.body.ingredient_season
+                );
+                pool.query(sql, (err, results) => {
+                    if (err) return res.status(500).send({ msg: err });
+                    res.status(200).send({
+                        msg: "Ingredient successfully added !",
+                    });
+                });
+            }
+        );
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .delete((req, res) => {
+        return res.status(405);
     });
 
 router
@@ -49,14 +65,21 @@ router
             req.params["name"]
         );
         pool.query(sql, (err, results) => {
-            if (err)
-                res.status(500).send({ msg: err });
+            if (err) res.status(500).send({ msg: err });
             else res.status(200).json(results.rows);
         });
     })
-    .patch((req, res) => {})
-    .delete((req, res) =>
-        res.status(405).send({ msg: "Action not allowed !" })
-    );
+    .post((req, res) => {
+        return res.status(405);
+    })
+    .put((req, res) => {
+        return res.status(405);
+    })
+    .patch((req, res) => {
+        return res.status(405);
+    })
+    .delete((req, res) => {
+        return res.status(405);
+    });
 
 module.exports = router;
