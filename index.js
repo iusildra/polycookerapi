@@ -1,5 +1,5 @@
-const router = require("./routes/router");
-const config = require("./config/default.json");
+const router = require("./src/routes/router");
+const config = require("./src/config/default.json");
 const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");

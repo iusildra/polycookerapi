@@ -1,0 +1,8 @@
+{
+    "name": "PolyCoocker",
+    "description": "Coocking site with calendar features",
+    "repository": "https://github.com/iusildra/PolyCooker",
+    "logo": "",
+    "keywords": ["node", "express", "heroku"],
+    "image": "heroku/nodejs"
+}
