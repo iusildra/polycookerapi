@@ -1,5 +1,8 @@
 require("dotenv").config();
 
+/**
+ * Extracting the login information from the environnement variable and creating a connection to the Postgres DB
+ */
 const database = process.env.DATABASE_URL;
 const regex_user = /\/[\w\d]+:/;
 const user = regex_user[Symbol.match](database)[0].slice(1, -1);

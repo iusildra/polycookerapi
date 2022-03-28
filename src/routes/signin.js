@@ -6,6 +6,7 @@ const pool = require("../db");
 
 router
     .route("/")
+    /** Log in */
     .post((req, res) => {
         const sql = format(
             `SELECT *
@@ -16,18 +17,21 @@ router
             req.body.emailusername
         );
         pool.query(sql, (err, results) => {
+            //Check the validity of the username/email
             if (err) return res.status(500).send(err);
             if (results.rows.length != 1) {
                 return res
                     .status(418)
-                    .send({ msg: "Username or password is incorrect !" });
+                    .send({ msg: `I'm not ${req.body.emailusername}` });
             }
             bcryptjs.compare(
                 req.body.passwd,
                 results.rows[0]["passwd"],
                 (bErr, bRes) => {
+                    //Check the validity of the password
                     if (bErr) return res.status(500).send(bErr);
                     if (bRes) {
+                        //Passwd OK, sign a json web token and send it
                         const token = jwt.sign(
                             {
                                 username: results.rows[0].username,
@@ -44,6 +48,7 @@ router
                             user: results.rows[0],
                         });
                     } else {
+                        //Password inccorect
                         return res.status(400).send({
                             msg: "Username or password incorrect !",
                         });

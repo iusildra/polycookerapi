@@ -5,17 +5,8 @@ const pool = require("../db");
 
 router
     .route("/")
-    .get((req, res) => {
-        pool.query(
-            `SELECT *
-		FROM ingredients
-		ORDER BY ingredient_name ASC`,
-            (err, results) => {
-                if (err) res.status(500).send({ msg: err });
-                else res.status(200).json(results.rows);
-            }
-        );
-    })
+    .get((req, res) => res.status(405))
+    /** Add a new ingredient to the db. Verify that the user is logged in */
     .post((req, res) => {
         valide.validateToken(
             req.headers.authorization.split(" ")[1],
@@ -51,6 +42,7 @@ router
 
 router
     .route("/name/:name")
+    /** Get every ingredient beginning with :name. Used for autocompletion */
     .get((req, res) => {
         const sql = format(
             `SELECT *

@@ -85,6 +85,7 @@ router
         validateToken(req.headers.authorization.split(" ")[1], (err, data) => {
             if (err)
                 return res.status(401).send({ msg: "You are not logged in !" });
+            if (req.params["id"] != req.body.id && !data.admin) return res.status(403).send({msg: "You are not authorized !"})
             if (req.body.passwd) {
                 bcryptjs.hash(req.body.passwd, 10, (err_hash, hash) => {
                     if (err_hash) return res.status(500).send(err_hash);
@@ -136,30 +137,5 @@ router
         });
     })
     .post((req, res) => res.status(405));
-
-router
-    .route("/username/:username/email/:email")
-    .get((req, res) => {
-        const sql = format(
-            `SELECT user_id FROM users WHERE username=%L AND email=%L`,
-            req.params["username"],
-            req.params["email"]
-        );
-        pool.query(sql, (err, results) => {
-            if (err) return res.status(500).send({ msg: err });
-            if (results.rowCount == 0)
-                return res.status(404).send({ msg: "Invalid credentials !" });
-            return res
-                .status(200)
-                .send({
-                    msg: "Valid credentials",
-                    id: results.rows[0].user_id,
-                });
-        });
-    })
-    .post((req, res) => res.status(405))
-    .put((req, res) => res.status(405))
-    .patch((req, res) => res.status(405))
-    .delete((req, res) => res.status(405));
 
 module.exports = router;
