@@ -110,9 +110,7 @@ router
             }
         });
     })
-    .patch((req, res) => {
-        return res.status(405).send({ msg: "Operation not allowed !" });
-    })
+    .patch((req, res) => res.status(405))
     .delete((req, res) => {
         validateToken(req.headers.authorization.split(" ")[1], (err, data) => {
             if (err)
@@ -138,5 +136,30 @@ router
         });
     })
     .post((req, res) => res.status(405));
+
+router
+    .route("/username/:username/email/:email")
+    .get((req, res) => {
+        const sql = format(
+            `SELECT user_id FROM users WHERE username=%L AND email=%L`,
+            req.params["username"],
+            req.params["email"]
+        );
+        pool.query(sql, (err, results) => {
+            if (err) return res.status(500).send({ msg: err });
+            if (results.rowCount == 0)
+                return res.status(404).send({ msg: "Invalid credentials !" });
+            return res
+                .status(200)
+                .send({
+                    msg: "Valid credentials",
+                    id: results.rows[0].user_id,
+                });
+        });
+    })
+    .post((req, res) => res.status(405))
+    .put((req, res) => res.status(405))
+    .patch((req, res) => res.status(405))
+    .delete((req, res) => res.status(405));
 
 module.exports = router;
