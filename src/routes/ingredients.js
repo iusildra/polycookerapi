@@ -30,8 +30,8 @@ router
                     req.body.is_allergen,
                     req.body.ingredient_season
                 );
-                pool.query(sql, (err, results) => {
-                    if (err) return res.status(500).send({ msg: err });
+                pool.query(sql, (err1, results) => {
+                    if (err1) return res.status(500).send({ msg: err1 });
                     res.status(200).send({
                         msg: "Ingredient successfully added !",
                     });

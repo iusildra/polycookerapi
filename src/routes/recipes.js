@@ -151,9 +151,9 @@ router
                     req.body.difficulty,
                     req.body.cost
                 );
-                pool.query(post_recipe, (err) => {
-                    if (err) {
-                        return res.status(500).send(err);
+                pool.query(post_recipe, (err1) => {
+                    if (err1) {
+                        return res.status(500).send(err1);
                     }
                     let insertIngredients = `INSERT INTO contains VALUES `;
                     req.body.ingredients.forEach((elt) => {
@@ -165,12 +165,12 @@ router
                         );
                     });
                     insertIngredients = insertIngredients.slice(0, -1);
-                    pool.query(insertIngredients, (err1) => {
-                        if (err1) {
+                    pool.query(insertIngredients, (err2) => {
+                        if (err2) {
                             pool.query(
                                 `DELETE FROM recipes WHERE recipe_id=${recipe_uuid}`
                             );
-                            return res.status(500).send(err1);
+                            return res.status(500).send(err2);
                         } else
                             return res
                                 .status(200)
