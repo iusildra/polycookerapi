@@ -150,6 +150,7 @@ router
                     return res
                         .status(401)
                         .send({ msg: "You are not logged in !" });
+                if (req.body.name != data.username) return res.status(403).send({msg: "You are not allowed to create recipes on one's behalf !"})
                 let recipe_uuid = uuid.v4();
                 let post_recipe = format(
                     insertRecipe,
@@ -169,7 +170,7 @@ router
                 pool.query(post_recipe, (err1) => {
                     //Try to insert the recipe in the DB
                     if (err1) {
-                        return res.status(500).send(err1);
+                        return res.status(500).send({ msg: err1 });
                     }
                     let insertIngredients = `INSERT INTO contains VALUES `;
                     req.body.ingredients.forEach((elt) => {
@@ -186,9 +187,9 @@ router
                         if (err2) {
                             //If it failed, then remove the inserted recipe to avoid memory leaks
                             pool.query(
-                                `DELETE FROM recipes WHERE recipe_id=${recipe_uuid}`
+                                `DELETE FROM recipes WHERE recipe_id='${recipe_uuid}'`
                             );
-                            return res.status(500).send(err2);
+                            return res.status(500).send({ msg: err2 });
                         } else
                             return res
                                 .status(200)
