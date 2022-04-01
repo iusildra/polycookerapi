@@ -28,31 +28,24 @@ router
                 }
             });
         }
-
-        /** Passwd encryption */
-        bcryptjs.hash(req.body.passwd, 10, (err_hash, hash) => {
-            if (err_hash) return res.status(500).send({ msg: err_hash });
-            else {
-                //Hash OK, adding the new user to the DB
-                const sql = format(
-                    `INSERT INTO users VALUES (%L, %L, %L, %L, %L, NOW())`,
-                    uuid.v4(),
-                    req.body.email,
-                    req.body.username,
-                    admin,
-                    hash
-                );
-                pool.query(sql, (err) => {
-                    const msg = admin
-                        ? "Your admin account has been registered !"
-                        : "Your normal account has been registered !";
-                    if (err) return res.status(500).send(err);
-                    else
-                        return res.status(200).send({
-                            msg: msg,
-                        });
+        console.log(req.body.passwd)
+        const sql = format(
+            `INSERT INTO users VALUES (%L, %L, %L, %L, %L, NOW())`,
+            uuid.v4(),
+            req.body.email,
+            req.body.username,
+            admin,
+            req.body.passwd
+        );
+        pool.query(sql, (err) => {
+            const msg = admin
+                ? "Your admin account has been registered !"
+                : "Your normal account has been registered !";
+            if (err) return res.status(500).send(err);
+            else
+                return res.status(200).send({
+                    msg: msg,
                 });
-            }
         });
     })
     .get((req, res) => {

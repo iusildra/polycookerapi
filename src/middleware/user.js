@@ -22,15 +22,9 @@ exports.validateRegister = (req, res, next) => {
             msg: "Please enter a passwd with min. 6 chars",
         });
     }
-    // passwd (repeat) does not match
-    if (
-        !req.body["passwd_repeat"] ||
-        req.body.passwd != req.body["passwd_repeat"]
-    ) {
-        return res.status(412).send({
-            msg: "Both passwords must match",
-        });
-    }
+    
+    console.log(req.body.passwd)
+
     pool.query(format(sql_username, req.body.username), (err1, results1) => {
         if (err1) return res.status(500).send(error500(err1));
         if (results1.rows.length > 0) {
@@ -56,10 +50,9 @@ exports.validateChange = (req, res, next) => {
             msg: "Please enter a passwd with min. 6 chars",
         });
     }
-    if (req.body.passwd)
-        if (req.body.passwd != req.body["passwd_repeat"])
-            return res.status(412).send({ msg: "Both password must match !" });
 
+    console.log(req.body.passwd)
+    
     pool.query(
         format(username_change, req.body.username, req.body.id),
         (err1, results1) => {

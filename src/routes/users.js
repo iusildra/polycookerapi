@@ -87,18 +87,19 @@ router
                 return res.status(401).send({ msg: "You are not logged in !" });
             if (req.params["id"] != req.body.id && !data.admin) return res.status(403).send({msg: "You are not authorized !"})
             if (req.body.passwd) {
-                bcryptjs.hash(req.body.passwd, 10, (err_hash, hash) => {
-                    if (err_hash) return res.status(500).send(err_hash);
+                try {
                     query += ",passwd=%L WHERE user_id=%L";
                     query = format(
                         query,
                         req.body.email,
                         req.body.username,
-                        hash,
+                        req.body.passwd,
                         req.body.id
                     );
                     update(query);
-                });
+                } catch (err_hash) {
+                    return res.status(500).send(err_hash)
+                }
             } else {
                 query += " WHERE user_id=%L";
                 query = format(
