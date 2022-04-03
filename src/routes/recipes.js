@@ -150,7 +150,7 @@ router
                     return res
                         .status(401)
                         .send({ msg: "You are not logged in !" });
-                if (req.body.author != data.username) return res.status(403).send({msg: "You are not allowed to create recipes on one's behalf !"})
+                if (req.body.author != data.userid) return res.status(403).send({msg: "You are not allowed to create recipes on one's behalf !"})
                 let recipe_uuid = uuid.v4();
                 let post_recipe = format(
                     insertRecipe,
